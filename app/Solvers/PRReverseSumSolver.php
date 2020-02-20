@@ -5,11 +5,11 @@ namespace App\Solvers;
 use Illuminate\Support\Arr;
 
 /**
- * Class StupidSolver
+ * Class ReverseSumSolver
  *
  * @package App\Solvers
  */
-class PracticeRoundStupidSolver extends ProblemSolver
+class PRReverseSumSolver extends ProblemSolver
 {
     /**
      * @inheritDoc
@@ -19,25 +19,26 @@ class PracticeRoundStupidSolver extends ProblemSolver
         $menu = Arr::first($this->dataSet);
         $slicesWanted = Arr::first($menu);
 
-        $slicesByPizza = Arr::last($this->dataSet);
+        $slicesByPizza = collect(Arr::last($this->dataSet));
 
         $result = collect();
-        foreach ($slicesByPizza as $pizzaID => $slicesCnt) {
-            if (empty($result)) {
+        $slicesByPizza->reverse()->each(function ($slicesCnt, $pizzaID) use ($slicesWanted, $result) {
+            if ($result->isEmpty()) {
                 $result->put($pizzaID, $slicesCnt);
-                continue;
+
+                return;
             }
 
             if ($result->sum() + $slicesCnt >= $slicesWanted) {
-                break;
+                return;
             }
 
             $result->put($pizzaID, $slicesCnt);
-        }
+        });
 
         return [
             $result->count(),
-            $result->keys()->toArray(),
+            $result->reverse()->keys()->toArray(),
         ];
     }
 }
