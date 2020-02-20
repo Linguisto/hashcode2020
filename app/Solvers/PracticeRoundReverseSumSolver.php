@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
  *
  * @package App\Solvers
  */
-class ReverseSumSolver extends ProblemSolver
+class PracticeRoundReverseSumSolver extends ProblemSolver
 {
     /**
      * @inheritDoc

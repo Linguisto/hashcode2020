@@ -9,7 +9,7 @@ use Illuminate\Support\Arr;
  *
  * @package App\Solvers
  */
-class StupidSolver extends ProblemSolver
+class PracticeRoundStupidSolver extends ProblemSolver
 {
     /**
      * @inheritDoc
