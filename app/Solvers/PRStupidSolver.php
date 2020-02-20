@@ -5,7 +5,7 @@ namespace App\Solvers;
 use Illuminate\Support\Arr;
 
 /**
- * Class StupidSolver
+ * Class WinnerSolver
  *
  * @package App\Solvers
  */

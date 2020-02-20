@@ -21,7 +21,7 @@ class RunCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'run {filepath} {solver}';
+    protected $signature = 'run {solver} {filepath}';
 
     /**
      * The description of the command.
@@ -114,11 +114,19 @@ class RunCommand extends Command
      */
     protected function writeOutFile(array $result): string
     {
-        $outFilePath = 'out' . DIRECTORY_SEPARATOR . $this->solverName . DIRECTORY_SEPARATOR . str_replace(
-                'in',
-                'out',
-                Arr::last(explode('/', $this->inFilePath))
-            );
+        $outFileName = str_replace(
+            'in',
+            'out',
+            Arr::last(explode('/', $this->inFilePath))
+        );
+
+        $outFileName = str_replace(
+            'txt',
+            'out.txt',
+            $outFileName
+        );
+
+        $outFilePath = 'out' . DIRECTORY_SEPARATOR . $this->solverName . DIRECTORY_SEPARATOR . $outFileName;
 
         if ($this->filesystem->has($outFilePath)) {
             $this->filesystem->delete($outFilePath);
