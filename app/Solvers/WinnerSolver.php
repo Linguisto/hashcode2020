@@ -11,6 +11,10 @@ use Illuminate\Support\Collection;
 
 class WinnerSolver extends ProblemSolver
 {
+    /**
+     * @var array
+     */
+    protected $result = [];
 
     /**
      * @inheritDoc
@@ -18,55 +22,38 @@ class WinnerSolver extends ProblemSolver
     public function solutionResult(): array
     {
         $registry = [];
+        $this->result = [
+            $this->libraries->count(),
+        ];
 
-        $libraries = $this->libraries->map(function (Library $library) use (&$registry) {
+        foreach ($this->libraries as $library) {
             if (empty($registry)) {
                 $registry += $library->books->pluck('id')->toArray();
 
-                return $library;
+                goto RESULT_PACKAGE;
             }
 
-            $rejected = collect();
-            $library->books = $library->books->reject(function (Book $book) use ($registry, $rejected) {
-                if (in_array($book->id, $registry)) {
-                    $rejected->push($book);
-
-                    return true;
-                }
-
-                return false;
+            $library->books = $library->books->reject(function (Book $book) use ($registry) {
+                return in_array($book->id, $registry);
             });
 
-            $rejected = $rejected->sortBy('score');
-            while (
-                ! $rejected->isEmpty() &&
-                (($library->books->count() / $library->shipPerDay) / $this->overAllDays < 1)
-            ) {
-                $library->books->push($rejected->shift());
-            }
+            RESULT_PACKAGE:
+            $this->result = array_merge($this->result, $this->packResult($library));
+        }
 
-            return $library;
-        });
-
-        return $this->packResult($libraries);
+        return $this->result;
     }
 
     /**
-     * @param Collection $libraries
+     * @param Library $library
      *
      * @return array
      */
-    public function packResult(Collection $libraries)
+    public function packResult(Library $library)
     {
-        $result = [
-            $libraries->count(),
+        return [
+            [$library->id, $library->books->count()],
+            $library->books->pluck('id')->toArray(),
         ];
-
-        foreach ($libraries as $library) {
-            $result[] = [$library->id, $library->books->count()];
-            $result[] = $library->books->pluck('id')->toArray();
-        }
-
-        return $result;
     }
 }

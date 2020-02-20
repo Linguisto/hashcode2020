@@ -126,11 +126,15 @@ class RunCommand extends Command
             $outFileName
         );
 
-        $outFilePath = 'out' . DIRECTORY_SEPARATOR . $this->solverName . DIRECTORY_SEPARATOR . $outFileName;
+        $baseOutFilePath = storage_path('out' . DIRECTORY_SEPARATOR . $this->solverName);
 
-        if ($this->filesystem->has($outFilePath)) {
-            $this->filesystem->delete($outFilePath);
+        if (! file_exists($baseOutFilePath)) {
+            mkdir($baseOutFilePath, 0755);
         }
+
+        $outFilePath = $baseOutFilePath . DIRECTORY_SEPARATOR . $outFileName;
+
+        $outFile = fopen($outFilePath, 'w');
 
         foreach ($result as $item) {
             $value = $item;
@@ -138,9 +142,11 @@ class RunCommand extends Command
                 $value = implode(' ', $item);
             }
 
-            $this->filesystem->append($outFilePath, $value);
+            fputs($outFile, $value . PHP_EOL);
         }
 
-        return storage_path($outFilePath);
+        fclose($outFile);
+
+        return $outFilePath;
     }
 }
