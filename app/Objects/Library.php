@@ -50,12 +50,4 @@ class Library
         $this->shipPerDay = $shipPerDay;
         $this->books = collect($books);
     }
-
-    /**
-     * @return float
-     */
-    public function usefulnessIndex(): float
-    {
-        return $this->books->sum('score') / $this->signProcessDays / $this->shipPerDay;
-    }
 }

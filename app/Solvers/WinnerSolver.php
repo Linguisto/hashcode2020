@@ -27,7 +27,7 @@ class WinnerSolver extends ProblemSolver
         $registry = [];
 
         $this->libraries = $this->libraries->sort(function (Library $current, Library $next) {
-            return $next->usefulnessIndex() <=> $current->usefulnessIndex();
+            return $this->usefulnessIndex($next) <=> $this->usefulnessIndex($current);
         });
 
         $resultLibsCount = 0;
@@ -54,6 +54,19 @@ class WinnerSolver extends ProblemSolver
         array_unshift($this->result, $resultLibsCount);
 
         return $this->result;
+    }
+
+    /**
+     * @return float
+     */
+    protected function usefulnessIndex(Library $library): float
+    {
+        $effectiveBooksCount = (int)floor($this->overAllDays - ($library->books->count() / $library->shipPerDay));
+
+        return $this
+                ->books
+                ->slice(0, $effectiveBooksCount)
+                ->sum('score') / $library->signProcessDays;
     }
 
     /**
