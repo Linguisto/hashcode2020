@@ -6,9 +6,12 @@ namespace App\Solvers;
 
 use App\Objects\Book;
 use App\Objects\Library;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Collection;
 
+/**
+ * Class WinnerSolver
+ *
+ * @package App\Solvers
+ */
 class WinnerSolver extends ProblemSolver
 {
     /**
@@ -22,10 +25,12 @@ class WinnerSolver extends ProblemSolver
     public function solutionResult(): array
     {
         $registry = [];
-        $this->result = [
-            $this->libraries->count(),
-        ];
 
+        $this->libraries = $this->libraries->sort(function (Library $current, Library $next) {
+            return $next->usefulnessIndex() <=> $current->usefulnessIndex();
+        });
+
+        $resultLibsCount = 0;
         foreach ($this->libraries as $library) {
             if (empty($registry)) {
                 $registry += $library->books->pluck('id')->toArray();
@@ -37,9 +42,16 @@ class WinnerSolver extends ProblemSolver
                 return in_array($book->id, $registry);
             });
 
+            if ($library->books->isEmpty()) {
+                continue;
+            }
+
             RESULT_PACKAGE:
+            ++$resultLibsCount;
             $this->result = array_merge($this->result, $this->packResult($library));
         }
+
+        array_unshift($this->result, $resultLibsCount);
 
         return $this->result;
     }
@@ -49,7 +61,7 @@ class WinnerSolver extends ProblemSolver
      *
      * @return array
      */
-    public function packResult(Library $library)
+    protected function packResult(Library $library)
     {
         return [
             [$library->id, $library->books->count()],

@@ -136,13 +136,21 @@ class RunCommand extends Command
 
         $outFile = fopen($outFilePath, 'w');
 
+        $i = 1;
+        $totalRecords = count($result);
+
         foreach ($result as $item) {
             $value = $item;
             if (is_array($item)) {
                 $value = implode(' ', $item);
             }
 
-            fputs($outFile, $value . PHP_EOL);
+            if ($i < $totalRecords) {
+                $value .= PHP_EOL;
+            }
+
+            ++$i;
+            fputs($outFile, $value);
         }
 
         fclose($outFile);
