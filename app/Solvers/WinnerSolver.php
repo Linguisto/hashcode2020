@@ -48,6 +48,7 @@ class WinnerSolver extends ProblemSolver
 
             RESULT_PACKAGE:
             ++$resultLibsCount;
+
             $this->result = array_merge($this->result, $this->packResult($library));
         }
 
@@ -63,7 +64,7 @@ class WinnerSolver extends ProblemSolver
      */
     protected function usefulnessIndex(Library $library): float
     {
-        $effectiveBooksCount = (int)floor($this->overAllDays - ($library->books->count() / $library->shipPerDay));
+        $effectiveBooksCount = $library->shipPerDay * ($this->overAllDays - $library->signProcessDays);
 
         return $library
                 ->books

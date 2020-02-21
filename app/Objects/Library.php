@@ -45,9 +45,9 @@ class Library
     public function __construct(int $id, $totalBooksCnt, $signProcessDays, $shipPerDay, array $books)
     {
         $this->id = $id;
-        $this->totalBooksCnt = $totalBooksCnt;
-        $this->signProcessDays = $signProcessDays;
-        $this->shipPerDay = $shipPerDay;
-        $this->books = collect($books);
+        $this->totalBooksCnt = (int)$totalBooksCnt;
+        $this->signProcessDays = (int)$signProcessDays;
+        $this->shipPerDay = (int)$shipPerDay;
+        $this->books = collect($books)->sortByDesc('score');
     }
 }

@@ -115,14 +115,14 @@ class RunCommand extends Command
     protected function writeOutFile(array $result): string
     {
         $outFileName = str_replace(
-            'in',
-            'out',
+            '.in',
+            '.out',
             Arr::last(explode('/', $this->inFilePath))
         );
 
         $outFileName = str_replace(
-            'txt',
-            'out.txt',
+            '.txt',
+            '.out.txt',
             $outFileName
         );
 

@@ -45,10 +45,8 @@ abstract class ProblemSolver implements ProvidesSolution
 
         $books = collect();
         foreach ($booksData as $id => $score) {
-            $books->push(new Book($id, $score));
+            $books->put($id, new Book($id, $score));
         }
-
-        $books = $books->sortBy('score');
 
         $libraries = collect();
 
