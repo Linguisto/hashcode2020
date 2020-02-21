@@ -80,7 +80,7 @@ class WinnerSolver extends ProblemSolver
     {
         return [
             [$library->id, $library->books->count()],
-            $library->books->sortByDesc('score')->pluck('id')->toArray(),
+            $library->books->pluck('id')->toArray(),
         ];
     }
 }
