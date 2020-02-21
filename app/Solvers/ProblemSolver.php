@@ -26,11 +26,6 @@ abstract class ProblemSolver implements ProvidesSolution
     protected $libraries;
 
     /**
-     * @var Collection|Book[]
-     */
-    protected $books;
-
-    /**
      * @var int
      */
     protected $overAllDays;
@@ -53,7 +48,7 @@ abstract class ProblemSolver implements ProvidesSolution
             $books->push(new Book($id, $score));
         }
 
-        $this->books = $books->sortBy('score');
+        $books = $books->sortBy('score');
 
         $libraries = collect();
 
