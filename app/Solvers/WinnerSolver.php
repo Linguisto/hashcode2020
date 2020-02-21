@@ -57,6 +57,8 @@ class WinnerSolver extends ProblemSolver
     }
 
     /**
+     * @param Library $library
+     *
      * @return float
      */
     protected function usefulnessIndex(Library $library): float
@@ -78,7 +80,7 @@ class WinnerSolver extends ProblemSolver
     {
         return [
             [$library->id, $library->books->count()],
-            $library->books->pluck('id')->toArray(),
+            $library->books->sortByDesc('score')->pluck('id')->toArray(),
         ];
     }
 }
