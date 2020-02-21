@@ -65,7 +65,7 @@ class WinnerSolver extends ProblemSolver
     {
         $effectiveBooksCount = (int)floor($this->overAllDays - ($library->books->count() / $library->shipPerDay));
 
-        return $this
+        return $library
                 ->books
                 ->slice(0, $effectiveBooksCount)
                 ->sum('score') / $library->signProcessDays;
