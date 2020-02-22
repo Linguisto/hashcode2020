@@ -112,7 +112,7 @@ class WinnerSolver extends ProblemSolver
     protected function usefulnessIndex(Library $library): float
     {
         // code that worked well
-        /*$effectiveBooksCount = $library->shipPerDay * ($this->overAllDays / $library->signProcessDays);
+        /*$effectiveBooksCount = $library->shipPerDay * ($this->overAllDays - $library->signProcessDays);
         return $library
                 ->books
                 ->slice(0, $effectiveBooksCount)
