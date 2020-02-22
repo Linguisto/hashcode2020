@@ -130,14 +130,8 @@ class WinnerSolver extends ProblemSolver
 
         $scoreRate = $libScore / $effectiveDaysCount;
         $signProcessRate = $this->overAllDays / $library->signProcessDays;
-        dump([
-            $scoreRate,
-            $signProcessRate,
-            $this->scoreImportance,
-            $this->signProcessImportance,
-        ]);
 
-        return 0;
+        return $scoreRate * $this->scoreImportance + $signProcessRate * $this->signProcessImportance;
     }
 
     /**
