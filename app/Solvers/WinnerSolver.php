@@ -111,6 +111,14 @@ class WinnerSolver extends ProblemSolver
      */
     protected function usefulnessIndex(Library $library): float
     {
+        // code that worked well
+        /*$effectiveBooksCount = $library->shipPerDay * ($this->overAllDays / $library->signProcessDays);
+        return $library
+                ->books
+                ->slice(0, $effectiveBooksCount)
+                ->sum('score') / $library->signProcessDays;*/
+
+        // code that has broken all
         $effectiveDaysCount = $this->overAllDays - $library->signProcessDays;
         $effectiveBooksCount = $library->shipPerDay * $effectiveDaysCount;
 
@@ -122,11 +130,14 @@ class WinnerSolver extends ProblemSolver
 
         $scoreRate = $libScore / $effectiveDaysCount;
         $signProcessRate = $this->overAllDays / $library->signProcessDays;
+        dump([
+            $scoreRate,
+            $signProcessRate,
+            $this->scoreImportance,
+            $this->signProcessImportance,
+        ]);
 
-        $effectiveScoreRate = $effectiveBooksCount / ($scoreRate * $this->scoreImportance);
-        $effectiveSignProcessRate = $effectiveDaysCount / ($signProcessRate * $this->signProcessImportance);
-
-        return ($effectiveScoreRate + $effectiveSignProcessRate) / 2;
+        return 0;
     }
 
     /**
