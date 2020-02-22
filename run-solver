@@ -1,0 +1,5 @@
+#!/bin/bash
+
+for file in ${@:2};
+    do php hashcode run $1 $file;
+done
